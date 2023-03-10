@@ -37,7 +37,7 @@ import config.config as cfg
 importlib.reload(cfg)
 
 
-fn = "config_exp_15062022_redo_exp.txt"
+fn = "reproduce_paper_experiment.txt"
 setup = me.readConfigFile(fn)
 
 

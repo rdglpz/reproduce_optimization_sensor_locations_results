@@ -35,7 +35,7 @@ from skimage.filters import rank
 
 from skimage.draw import line
 
-fn = "config_exp_15062022_redo_exp.txt"
+fn = "reproduce_paper_experiment.txt"
 
 me.createProject(fn)
 

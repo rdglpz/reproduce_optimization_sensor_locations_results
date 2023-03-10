@@ -40,7 +40,7 @@ import itertools as it
 
 plt.style.use("ggplot")
 
-setup = me.readConfigFile("config_exp_15062022_redo_exp.txt")
+setup = me.readConfigFile("reproduce_paper_experiment.txt")
 
 
 #cargamos imagenes en luminance e importance
