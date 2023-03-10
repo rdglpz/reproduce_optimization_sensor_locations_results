@@ -564,17 +564,19 @@ def perimeter(img):
     
     '''
     perimeter = list([])
-    for i in range(0,img.shape[1]):
-        perimeter.append((0,i))
-
-    for i in range(0,img.shape[1]):
-        perimeter.append((img.shape[1]-1,i))
     
-    for i in range(0,img.shape[0]):
-        perimeter.append((i,0))
+    for i in range(0, img.shape[1]):
+        perimeter.append((0, i))
 
-    for i in range(0,img.shape[0]):
-        perimeter.append((i,img.shape[1]-1))
+    for i in range(0, img.shape[1]):
+       # perimeter.append((img.shape[1]-1, i))
+        perimeter.append((img.shape[0]-1, i))
+    
+    for i in range(0, img.shape[0]):
+        perimeter.append((i, 0))
+
+    for i in range(0, img.shape[0]):
+        perimeter.append((i, img.shape[1]-1))
         
     return perimeter
 
@@ -622,7 +624,7 @@ def detectRegion(s,flatMeansDecrease):
             
     return cut
 
-def constructMask(si,img,flatMeansDecrease):
+def constructMask(si, img, flatMeansDecrease):
     
     '''
     
@@ -645,7 +647,8 @@ def constructMask(si,img,flatMeansDecrease):
         
         for i in range(len(rr)):
             
-            a = (rr[i],cc[i])
+            a = (rr[i], cc[i])
+            
             
             l.append(img[a])
             
