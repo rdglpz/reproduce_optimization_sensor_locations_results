@@ -1,6 +1,21 @@
 Optimization approach to locate light pollution sensor in cities
 
-It reproduces Figures 9-11 of the paper: Optimization of Sensor Locations for a Light Pollution Monitoring Network
+It reproduces Figures 9-11 of the paper: Optimization of Sensor Locations for a Light Pollution Monitoring Network.
+
+In this project you can verify the results at different levels. 
+
+1. You can simply check the figures 9-11 of the paper in the folder ""
+2. You can re-run the optimization process to reproduce the results given the influence regions maps or
+3. Generate a project from the ground to redo the whole experiment from the region maps. 
+
+
+For the option 1 go to folder /reports/figures
+For the option 2 and 3 you need to setup a python 3 environment.
+
+1. Create an virtualenv
+2. Install the required packages
+3. go to the root folder and run python scripts 1, 2 and 3
+4. Verify the results in the folder reproduce. 
 
 Project Organization
 --------------------
