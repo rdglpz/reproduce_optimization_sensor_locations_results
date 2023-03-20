@@ -3,9 +3,9 @@ import importlib
 
 import matplotlib.pyplot as plt
 
-from matplotlib import cm
-import matplotlib as mpl
-import itertools as it
+#from matplotlib import cm
+#import matplotlib as mpl
+#import itertools as it
 
 
 #from matplotlib.colors import ListedColormap, LinearSegmentedColormap
@@ -29,7 +29,7 @@ importlib.reload(rg)
 importlib.reload(me)
 importlib.reload(netfit)
 
-from geneticalgorithm import geneticalgorithm as ga
+#from geneticalgorithm import geneticalgorithm as ga
 
 
 
@@ -64,6 +64,11 @@ arguments = (cfg.experiment + setup["experiment_id"]
              + setup["folder_output"] 
              + setup["output_args"]
             )
+
+path2optimum_values_file = (cfg.experiment 
+                           + setup["experiment_id"] 
+                           + setup["folder_output"] 
+                           )
 
 
 data = pd.read_csv(filesv)
@@ -104,18 +109,18 @@ FDNTLI = (FDNTLI >= setup['neglect_values'])*FDNTLI
 
 sensitivity = ps.f5(FDNTLI, EAM, 64)
 
-#cargamos imagenes en luminance e importance
+#paths to ntli and vulnerability
 ilumina = setup["folder_input"] + setup["input_ntli"]
 niveles = setup["folder_input"] + setup["input_evm"]
 sigma_y = setup['filterg_sy']
 sigma_x = setup['filterg_sx']
 sigma = [sigma_y,sigma_x]
 
-aptitude = netfit.NetworkFitness(FDNTLI, EAM, sensitivity, variograms, variograms_m, coords)
+aptitude = netfit.NetworkFitness(FDNTLI, EAM, sensitivity, variograms, 
+                                 variograms_m, coords)
 aptitude.selectFitnessFunction("max")
 
-#res_df= pd.DataFrame(results)
-#res_df.to_csv("results_7x7.csv")
+
 res_read = pd.read_csv(OptimumValues)
 rr = np.array(res_read)
 r = list([])
@@ -151,9 +156,10 @@ P = plotSolutions(r[2],R)
 R = plotSolutions(r[48], (FDNTLI>0)*1).astype(int)   
 
 
-fig, axs = plt.subplots(ncols=7, nrows=7, figsize=(15, 15),constrained_layout=True)
+fig, axs = plt.subplots(ncols=7, nrows=7, figsize=(15, 15), 
+                        constrained_layout = True)
 
-# add an artist, in this case a nice label in the middle...
+
 ix = 0
 saveR = np.zeros(R.shape)
 f = 0
@@ -162,22 +168,88 @@ for row in range(len(c)):
     for col in range(7):
         R = (aptitude.project(r[ix])+(FDNTLI>0)*1).astype(int)
         PS = plotSolutions(r[ix],R)
-     #   R = plotSolutions(r[ix],(FDNTLI>0)*1).astype(int)
-    #    R = plotSolutions(r[ix],R)
-        #R_and_locations = AttachLocations(R,results)
         axs[row,col].imshow(PS,cmap="viridis",interpolation='none')
 
         if col==0: 
-            axs[row, col].set_ylabel("$c={c: 1.0f}$".format(c = c[row]),rotation = 0,fontsize=18)
+            axs[row, col].set_ylabel("$c={c: 1.0f}$".format(c = c[row]), 
+                                     rotation = 0,fontsize = 18)
             axs[row, col].yaxis.set_label_coords(-.27, .5)
         if row==0: 
-            axs[row, col].set_title('$n = {n: 1.0f}$'.format(n=col+1),fontsize=18)
-            #axs[row, col].set_xlabel("n = {n: 1.0f}".format(n=col+1))
+            axs[row, col].set_title('$n = {n: 1.0f}$'.format(n = col + 1), 
+                                    fontsize = 18
+                                    )
             
-        axs[row, col].tick_params(left = False, right = False , labelleft = False , labelbottom = False, bottom = False)
+        axs[row, col].tick_params(left = False, right = False , 
+                                  labelleft = False , labelbottom = False, 
+                                  bottom = False
+                                  )
 
         ix += 1
 
 
-plt.savefig("covers64_2.pdf",format='pdf', dpi=500,bbox_inches="tight")
+#save in results folder
+print("Saving Figure 10 as:", path2optimum_values_file + "figure_10.pdf")
+plt.savefig(path2optimum_values_file + "figure_10.pdf", format = 'pdf', 
+            dpi = 500 , 
+            bbox_inches = "tight")
+
+aptitudes = np.array(pd.read_csv(arguments))[:, 1]
+
+fig, ax = plt.subplots()
+styles = ['--bo', '--', ':', '-.', '.-k', 'b', '-vm']
+for i in range(7):
+    
+    ax.plot(-aptitudes.reshape(7, 7).T[:, i]*100, styles[i], 
+            label = "c = " + str(c[i]))
+
+ax.set_xticks([i for i in range(len(c))])
+ax.set_xticklabels([i + 1 for i in range(len(c))])
+ax.set_ylabel(r"Captured Sensitivity Percentage")
+ax.set_xlabel("Number of sensors")
+ax.legend()
+print("Saving Figure 09 as:", path2optimum_values_file + "figure_09.pdf")
+plt.savefig(path2optimum_values_file + "figure_09.pdf", format = 'pdf', 
+            bbox_inches = "tight")
+
+nonsat,b = ps.desaturate(luminance,th=setup["desaturation_th"])
+
+variograms = variogram_set.reshape(len(variogram_set),nonsat.shape[0],
+                                   nonsat.shape[1]
+                                   )
+variograms_m = variogram_set_m.reshape(len(variogram_set),nonsat.shape[0],
+                                       nonsat.shape[1])
+coords = np.array(data.iloc[:,1:3])
+NLTI = sp.ndimage.gaussian_filter(nonsat, sigma, mode='constant')
+NLTI = (NLTI>=setup["neglect_values"])*NLTI
+
+
+sensitivity = ps.f5(NLTI,EAM,1)
+nf = netfit.NetworkFitness(NLTI,EAM,sensitivity,variograms,variograms_m,coords)
+nf.selectFitnessFunction("max")
+f = nf.f
+
+solutions = list([])
+
+for rx in r:  
+    solutions.append(f(rx))
+    
+M = np.array(solutions).reshape(7,7)
+
+cf = 1 
+fig, ax = plt.subplots()
+styles = ['--bo', '--', ':', '-.', '.-k', 'b', '-vm']
+for i in range(7):
+    ax.plot(-M[:, i]*100, styles[i], label = "n = " + str(i + 1))
+
+ax.set_xticks([i for i in range(len(c))])
+ax.set_xticklabels(c)
+ax.set_ylabel(r"Captured FNTLI Percentage")
+ax.set_xlabel("$c$")
+ax.legend(ncol = 2 ,bbox_to_anchor = (0.55, 0.4), loc = 'upper left', 
+          borderaxespad = 0
+          )
+print("Saving Figure 11 as:", path2optimum_values_file + "figure_11.pdf")
+plt.savefig(path2optimum_values_file + "Figure_11.pdf", format = 'pdf', 
+            bbox_inches = "tight")
+
 

@@ -9,4 +9,6 @@ Project Lead
 Project Contributors
 ------------
 
-None.
+* S. Ivvan Valdez
+* Jorge Paredes-Tavares
+* Hector Lamphar
