@@ -1,12 +1,10 @@
 # Byte-compiled / optimized / DLL files
 
-.pyc
+*.pyc
 # Jupyter Notebook
-.ipynb_checkpoints
+*.ipynb_checkpoints
 
 
-# Jupyter Notebook
-.ipynb_checkpoints
 
 # IPython
 profile_default/
