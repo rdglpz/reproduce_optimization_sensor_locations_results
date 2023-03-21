@@ -13,3 +13,6 @@ ipython_config.py
 *.DS_Store
 
 
+*.csv
+
+
