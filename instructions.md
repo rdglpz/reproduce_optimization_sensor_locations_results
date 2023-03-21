@@ -87,3 +87,9 @@ To reproduce the results you must run the experiment in three steps:
 >Relative Frequency approach
 >
 >wheter or not or decided what is important to consider.
+
+
+References:
+
+Sync local and remote github repositories
+https://www.ocpsoft.org/tutorials/git/reset-and-sync-local-respository-with-remote-branch/
