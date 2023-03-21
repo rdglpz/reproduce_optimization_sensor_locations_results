@@ -20,6 +20,8 @@ For the option 2 and 3 you need to setup a python 3 environment.
 Project Organization
 --------------------
 
+```
+
 .
 ├── AUTHORS.md
 ├── LICENSE
@@ -64,6 +66,7 @@ Project Organization
     ├── network_fitness.py
     ├── positioning_sensors.py
     └── regionGrowing.py
+```
 
 Instructions:
 
@@ -86,7 +89,7 @@ https://medium.com/swlh/how-to-use-screen-on-linux-to-detach-and-reattach-your-t
 https://docs.python.org/3/library/venv.html
 https://www.freecodecamp.org/news/manage-multiple-python-versions-and-virtual-environments-venv-pyenv-pyvenv-a29fb00c296f/
 
-
+```
 zation_sensor_locations_results/reproduce$ neofetch
             .-/+oossssoo+/-.               rlopez3@cgeoqro 
         `:+ssssssssssssssssss+:`           --------------- 
@@ -108,5 +111,5 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso   GPU: 00:02.0 Red Hat, Inc. QXL parav
       -+sssssssssssssssssyyyssss+-
         `:+ssssssssssssssssss+:`
             .-/+oossssoo+/-.
-
+```
 
